@@ -1,0 +1,18 @@
+<header>
+    <h1>Petition</h1>
+</header>
+<h1 id="oops"> Oops, something went wrong! Try again!</h1>
+<form class="" method="POST">
+<div class="inputs">
+<input type="text" name="first-name" value="">
+<br>
+<input type="text" name="last-name" value="">
+<br>
+<input id="signature" type="hidden" name="signature" value="">
+<br>
+<!-- security reason -->
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+<button>Submit</button>
+</div>
+</form>
+<canvas id="canvasinputbox" width="350" height="80"></canvas>
