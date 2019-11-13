@@ -39,59 +39,86 @@ app.get("/petition", (req,res)=> {
     // console.log("****7/ROUTE****");
     res.render("submit",{ //first argument is where we are going to go
         layout: "petition"
-
     });
 });
-
 app.post("/petition",(req, res)=>{
     // console.log("post request made");
     // console.log("req: ", req.body);
     let firstName = req.body["first-name"];
     let lastName = req.body["last-name"];
-    let signature = req.body["signature"];
-    if(firstName == "" || lastName == ""|| !signature){
-        res.redirect("/petition");
-        $(".oops").show();
-    } else{
-        db.addPetition(firstName, lastName, signature)
-            .then(()=>{
-                console.log("succesfully added");
-                console.log("req.body: ", req.body.lastName);
-                res.render("thanks",{ //first argument is where we are going to go
-                    layout: "petition"
+    let email = req.body["email"];
+    let password = req.body["password"];
+    console.log(req.body);
+    hash(password).then(hashedPassword =>{
+        if(firstName == "" || lastName == ""|| !email || !password){
+            res.redirect("/petition");
+        // $("#oops").show();
+        } else{
+            db.addUsers(firstName, lastName, email, hashedPassword)
+                .then(({rows})=>{
+                    console.log("succesfully added");
+                    req.session.signature = rows[0].id;
+                    // console.log("req.body: ", req.body);
+                    res.redirect("/profile");
                 })
-                    .catch(err =>{
-                        console.log("addCity error: ", err);
-                    });
-            });
-        // db.getNumber()
-        //     .then(({ rows }) => {
-        //         console.log("number: ", rows);
-        //         res.send(({ rows }));
-        //     })
-        //     .catch(err => {
-        //         console.log("number error: ",err);
-        //     });
+                .catch(err =>{
+                    console.log("addUsers error: ", err);
+                });
+        }
     }
+    ).catch( err =>{
+        console.log("password error: ", err);
+    });
 });
-app.get("/petition",(req,res)=> {
-    db.getPetition()
 
+app.get("/thanks", (req,res)=>{
+    console.log("thaks route body: ", req.body);
+    db.getSignature(req.session.signature)
+        .then(({rows}) => {
+            console.log(req.session.signature);
+            res.render("thanks", {
+                layout: "petition",
+                id: req.session.signature,
+                img: rows[0].signature
+            });
+        })
+        .catch(err => {
+            console.log("signature error: ",err);
+        });
+});
+
+
+// PROFILE
+app.get("/profile", (req,res)=>{
+    res.render("profile", {
+        layout: "petition",
+    });
+});
+app.post("/profile",(req,res)=> {
+    console.log(req.body);
+    let age = req.body["age"];
+    let city = req.body["city"];
+    let url = req.body["url"];
+    db.addProfile(age, city, url)
         .then(({ rows }) => {
-            console.log("rows: ", rows);
-            res.send(({ rows }));
+            console.log("PROFILE: ", rows);
+            res.redirect("/thanks");
         })
         // rows is the ONLY property of results that we care about
         // rows contains the actual data that we requested from the table
         .catch(err => {
-            console.log("cities error: ",err);
+            console.log("PROFILE error: ",err);
         });
 });
+//////
 app.get("/signednames",(req,res)=> {
     db.getNames()
         .then(({ rows }) => {
-            console.log("names: ", rows);
-            res.send(({ rows }));
+            console.log("names: ", rows[0]);
+            res.render("signednames",{
+                layout: "petition",
+                names: rows
+            });
         })
         // rows is the ONLY property of results that we care about
         // rows contains the actual data that we requested from the table
@@ -107,29 +134,48 @@ app.get("/register", (req, res) =>{
         res.redirect("/");
     });
 });
+app.listen(process.env.PORT || 8080,() => console.log("listening..."));
 
-app.post("/add-city",(req, res)=>{
-    db.addCity('Nigeria', 700000)
-        .then(()=>{
-            console.log("succesfully added");
-        })
-        .catch(err =>{
-            console.log("addCity error: ", err);
-        });
-});
-app.get("/cities",(req,res)=> {
-    db.getCities()
 
-        .then(({ rows }) => {
-            console.log("rows: ", rows);
-            res.send(({ rows }));
-        })
-        // rows is the ONLY property of results that we care about
-        // rows contains the actual data that we requested from the table
-        .catch(err => {
-            console.log("cities error: ",err);
-        });
-});
+// app.get("/petition",(req,res)=> {
+//     db.getPetition()
+//         .then(({ rows }) => {
+//             console.log("rows: ", rows);
+//             res.send(({ rows }));
+//         })
+//         // rows is the ONLY property of results that we care about
+//         // rows contains the actual data that we requested from the table
+//         .catch(err => {
+//             console.log("cities error: ",err);
+//         });
+// });
+
+
+
+
+
+// app.post("/add-city",(req, res)=>{
+//     db.addCity('Nigeria', 700000)
+//         .then(()=>{
+//             console.log("succesfully added");
+//         })
+//         .catch(err =>{
+//             console.log("addCity error: ", err);
+//         });
+// });
+// app.get("/cities",(req,res)=> {
+//     db.getCities()
+//
+//         .then(({ rows }) => {
+//             console.log("rows: ", rows);
+//             res.send(({ rows }));
+//         })
+//         // rows is the ONLY property of results that we care about
+//         // rows contains the actual data that we requested from the table
+//         .catch(err => {
+//             console.log("cities error: ",err);
+//         });
+// });
 
 
 
@@ -144,4 +190,4 @@ app.get("/cities",(req,res)=> {
 //         layout: "petition"
 //     });
 // });
-app.listen(8080,() => console.log("listening..."));
+// we want to check if the input field for the website starts with "https://" or "http://". if not, we would add this to the string

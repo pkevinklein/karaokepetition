@@ -1,6 +1,10 @@
 <div class="thankyou">
-    <h1>Thanks for your contribution</h1>
-    {{ rows }}
+    <h1>Check out all the names:</h1>
+<ul>
+{{#names}}
+<li>{{firstname}} {{lastname}}</li>
+{{/names}}
+</ul>
 </div>
 
 <!-- first-name and last-name>
