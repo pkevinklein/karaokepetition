@@ -1,0 +1,14 @@
+<header>
+    <h1>Please, add your signature</h1>
+</header>
+<form class="" method="POST">
+<div class="signature-input">
+
+<input id="signature" type="hidden" name="signature" value="">
+<br>
+<!-- security reason -->
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+<button class="text-white bg-dark">ADD SIGNATURE</button>
+</div>
+</form>
+<canvas id="canvasinputbox" width="350" height="80"></canvas>

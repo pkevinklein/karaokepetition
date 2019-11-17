@@ -1,26 +1,59 @@
-<header>
-    <h1>Petition</h1>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+
+    </div>
+    <div class="col-sm">
+        <header>
+            <h3>This will only take a few minutes...</h3>
+
 </header>
-<h1 id="oops"> Oops, something went wrong! Try again!</h1>
-<form class="" method="POST">
-<div class="inputs">
-        <h2>First Name</h2>
-<input type="text" name="first-name" value="">
-<br>
-        <h2>Last Name</h2>
-<input type="text" name="last-name" value="">
-<br>
-    <h2>E-mail</h2>
-<input type="text" name="email" value="">
-<br>
-    <h2>Password</h2>
-<input type="password" name="password" value="">
-<br>
-<input id="signature" type="hidden" name="signature" value="">
-<br>
-<!-- security reason -->
-<input type="hidden" name="_csrf" value="{{csrfToken}}">
-<button>Submit</button>
+    </div>
+    <div class="col-sm">
+
+    </div>
+  </div>
 </div>
+<form class=" shadow p-1 mb-4 rounded bg-dark" method="POST">
+    <div class="container">
+      <div class="row">
+        <div class="col align-self-start">
+<!-- <div class="inputs"> -->
+        <h2>First Name</h2>
+<input class="shadow p-1 mb-1 rounded"type="text" name="first-name" value="">
+<br>
+<br>
+<h2>Last Name</h2>
+<input class="shadow p-1 mb-1 rounded" type="text" name="last-name" value="">
+</div>
+<div class="col align-self-center">
+    <h2>E-mail</h2>
+    <input type="text" class="shadow p-1 mb-1 rounded" name="email" value="">
+    <br>
+    <br>
+    <h2>Password</h2>
+    <input type="password" class="shadow p-1 mb-1 rounded" name="password" value="">
+</div>
+<div class="col align-self-end">
+    <div class="container">
+        <!-- <img src="assets/kristina-flour-BcjdbyKWquw-unsplash.jpg"width="200px"class=".rounded-lg rounded float-right" alt=""> -->
+    <button class="btn btn-warning btn-primary btn-lg">SIGN UP</button>
+
+</div>
+<br>
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+</div>
+</div>
+</div>
+<br>
+
+<!-- </div> -->
 </form>
-<canvas id="canvasinputbox" width="350" height="80"></canvas>
+<br>
+<footer>You already have an account? <a href="/login" class="text-dark">Click here!</a></footer>
+<!-- <div class="fixed-bottom">
+    <img src="assets/kristina-flour-BcjdbyKWquw-unsplash.jpg"width="27%"class=".rounded-lg rounded float-center" alt="">
+
+</div> -->

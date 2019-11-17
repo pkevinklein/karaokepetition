@@ -1,10 +1,30 @@
-<div class="thankyou">
-    <h1>Check out all the names:</h1>
+<div class="signednames">
+    <h1>Check out all the people who signed for this noble cause:</h1>
+    <div class="container">
+
+
 <ul>
 {{#names}}
-<li>{{firstname}} {{lastname}}</li>
+<li>🎙{{firstname}} {{lastname}} {{age}}
+
+    <a href="./signednames/{{city}}" class="text-warning">{{city}}</a>
+
+</li>
+{{#if url }}
+↳<a href="{{url}}" class="text-dark">{{url}}</a>
+{{/if}}
 {{/names}}
 </ul>
-</div>
 
-<!-- first-name and last-name>
+<ul>
+{{#signers}}
+<li>🎙{{firstname}} {{lastname}} {{age}}     {{city}}</li>
+{{#if url }}
+↳<a href="{{url}}" class="text-dark">{{url}}</a>
+{{/if}}
+{{/signers}}
+<a href="/signednames"<button class="button"></button>
+</ul>
+</div>
+</div>
+</div>

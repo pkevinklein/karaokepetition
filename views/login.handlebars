@@ -1,0 +1,15 @@
+<header>
+    <h2 class=" text-center">Do your thing:</h2>
+</header>
+
+<form class="shadow p-3 mb-5 rounded  bg-warning text-dark text-center" method="POST">
+    <h4>Email address</h4>
+
+<input class="shadow rounded p-1 mb-2" type="email" name="email" value="">
+<h4>Password</h4>
+
+<input class="shadow rounded p-1 mb-2" type="password" name="password" value="">
+<br><br>
+<button class="btn btn-light shadow rounded">Log in</button>
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+</form>

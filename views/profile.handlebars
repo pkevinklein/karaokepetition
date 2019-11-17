@@ -1,8 +1,38 @@
-<header>
-    <h1>Petition</h1>
-</header>
+<div class="container ">
+    <h3>Some more useless info for our stats?</h3>
+  <div class="row p-3 mb-2 bg-light text-dark shadow rounded">
+    <div class="col-sm ">
+        <h6 class="text-left">something else here</h6>
 
-<form class="" method="POST">
+        <form class="" method="POST">
+            <div >
+                <h3>Age:</h3>
+                <input class="shadow rounded" type="number" name="age" value="">
+                <br>
+                <h3>City:</h3>
+                <input class="shadow rounded"type="text" name="city" value="">
+    </div>
+    <div class="col-sm">
+
+    </div>
+</div>
+<div class="col-sm">
+    <br>
+        <h3>Website:</h3>
+        <input class="shadow rounded" type="text" name="url" value="">
+        <br>
+        <br>
+
+        <button class="btn btn-secondary btn-lg rounded-pill shadow rounded">CONTINUE</button>
+
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- <form class="" method="POST">
 <div class="profile-inputs">
     <h2>Age:</h2>
 <input type="number" name="age" value="">
@@ -14,6 +44,7 @@
 <input type="text" name="url" value="">
 <br>
 
-<button>Submit</button>
+<button class="btn btn-secondary btn-lg rounded-pill">CONTINUE</button>
 </div>
-</form>
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+</form> -->

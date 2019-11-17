@@ -4,16 +4,12 @@ const spicedPg = require('spiced-pg');
 const db = spicedPg(process.env.DATABASE_URL || 'postgres:postgres:postgres@localhost:5432/petition');
 
 //number of signed people
-module.exports.getSignature = function getSignature(id) {
-    return db.query('SELECT * FROM signatures WHERE id = $1', [id]); //accepts two arguments. the first one is the query
+module.exports.getSignature = function getSignature(user_id) {
+    return db.query('SELECT * FROM signatures WHERE user_id = $1', [user_id]); //accepts two arguments. the first one is the query
 };
-exports.addUsers = function addSignature(signature) { //accepts two arguments. the first one is the query
-    return db.query('INSERT INTO users (signature) VALUES ($1) RETURNING id',
-        [ signature]); //this array will look exactly like the arguments from the function
-};
-//ask for names
-module.exports.getNames = function getNames() {
-    return db.query('SELECT firstname, lastname FROM users'); //accepts two arguments. the first one is the query
+exports.addSignature = function addSignature(signature, user_id) { //accepts two arguments. the first one is the query
+    return db.query('INSERT INTO signatures (signature, user_id) VALUES ($1, $2) RETURNING id',
+        [signature, user_id]); //this array will look exactly like the arguments from the function
 };
 //this is how we insert a new row
 exports.addUsers = function addUsers(firstname, lastname, email, password) { //accepts two arguments. the first one is the query
@@ -21,14 +17,87 @@ exports.addUsers = function addUsers(firstname, lastname, email, password) { //a
         [ firstname, lastname, email, password]); //this array will look exactly like the arguments from the function
 };
 
-exports.addPetition = function addPetition(firstname, lastname, signature) { //accepts two arguments. the first one is the query
-    return db.query('INSERT INTO petition (firstname, lastname, signature) VALUES ($1, $2, $3) RETURNING id',
-        [ firstname, lastname, signature]); //this array will look exactly like the arguments from the function
+exports.addProfile = function addProfile(age, city, url, user_id) { //accepts two arguments. the first one is the query
+    return db.query('INSERT INTO user_profiles (age, city, url, user_id) VALUES ($1, $2, $3, $4) RETURNING id',
+        [ age, city, url, user_id]); //this array will look exactly like the arguments from the function
 };
-exports.addProfile = function addProfile(age, city, url) { //accepts two arguments. the first one is the query
-    return db.query('INSERT INTO user_profiles (age, city, url) VALUES ($1, $2, $3) RETURNING id',
-        [ age, city, url]); //this array will look exactly like the arguments from the function
+//login
+module.exports.getSignedUser = function getSignedUser(email) {
+    return db.query('SELECT password FROM users WHERE email = $1', [email]); //accepts two arguments. the first one is the query
 };
+
+//ask for names
+module.exports.getNames = function getNames() {
+    return db.query(`SELECT firstname, lastname, email, age, city, url, signature
+    FROM signatures
+    JOIN users
+    ON user_id = users.id
+    LEFT JOIN user_profiles
+    ON users.id = user_profiles.user_id`); //accepts two arguments. the first one is the query
+};
+
+module.exports.getCity = function getCity(city) {
+    return db.query(
+        `SELECT firstname, lastname, age, email, city, url FROM signatures
+       JOIN users
+       ON signatures.user_id = users.id
+       LEFT JOIN user_profiles
+       ON users.id = user_profiles.user_id
+       WHERE LOWER(city) = LOWER($1)`,
+        [city]
+    );
+};
+//edit profile
+module.exports.getEditProfile = function getEditProfile(id) {
+    return db.query(
+        `SELECT users.id AS users_id, firstname, lastname, age, city, email, url FROM users
+       LEFT JOIN user_profiles
+       ON users.id = user_profiles.user_id
+       WHERE users.id = $1`,
+        [id]
+    );
+};
+
+module.exports.editProfile = function editProfile(id) {
+    return db.query(
+        `SELECT users.id AS users_id, firstname, lastname, age, city, email, url FROM users
+       LEFT JOIN user_profiles
+       ON users.id = user_profiles.user_id
+       WHERE users.id = $1`,
+        [id]
+    );
+};
+//editing PROFILE
+module.exports.updateUser = function updateUser(firstname, lastname, email, user_id) {
+    return db.query(
+        `UPDATE users SET (firstname, lastname, email)
+        VALUES ($1,$2,$3)
+        ON CONFLICT (id)
+        DO UPDATE SET firstname = $1, lastname = §2, email = $3;`, [firstname, lastname, email, user_id]
+    );
+};
+module.exports.updateUserPass = function updateUserPass(firstname, lastname, email, password, user_id) {
+    return db.query(
+        `UPDATE users SET (firstname, lastname, email, password)
+        VALUES ($1,$2,$3)
+        ON CONFLICT (id)
+        DO UPDATE SET firstname = $1, lastname = §2, email = $3, password = $4;`, [firstname, lastname, email, user_id]
+    );
+};
+module.exports.updateUserProfile = function updateUserProfile(age, city, url, user_id) {
+    return db.query(
+        `UPDATE users SET (age, city, url)
+        VALUES ($1,$2,$3)
+        ON CONFLICT (id)
+        DO UPDATE SET age = $1, city = §2, url = $3;`, [age, city, url, user_id]
+    );
+};
+
+
+// exports.addPetition = function addPetition(firstname, lastname, signature) { //accepts two arguments. the first one is the query
+//     return db.query('INSERT INTO petition (firstname, lastname, signature) VALUES ($1, $2, $3) RETURNING id',
+//         [ firstname, lastname, signature]); //this array will look exactly like the arguments from the function
+// };
 
 
 // module.exports.getPetition = function getPetition() {
@@ -66,3 +135,7 @@ exports.addProfile = function addProfile(age, city, url) { //accepts two argumen
 // ON singers.id = songs.singer_id
 // JOIN albums
 // ON songs.id = albums.song_id;
+
+//if the user is logged out, he or she can go to two pages only: register(get and post) or login page(get ad post)
+//the suer must have signed to see the thank you page,
+//if you have not signed, you can only see

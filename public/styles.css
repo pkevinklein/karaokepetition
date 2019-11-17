@@ -1,19 +1,37 @@
-*{
+body{
+    background-color: #E25821;
+}
+.selector-for-some-widget {
+  box-sizing: content-box;
+}
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.ml-1 {
+  margin-left: ($spacer * .25) !important;
+}
+
+.px-2 {
+  padding-left: ($spacer * .5) !important;
+  padding-right: ($spacer * .5) !important;
+}
+
+.p-3 {
+  padding: $spacer !important;
+}
+/* *{
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-}
+} */
 body {
     background-color: hotpink;
 }
 h1 {
     font-style: italic;
 }
-input {
-    display: grid;
-    position: absolute;
-    grid-row: auto;
-}
+
 canvas {
     border: 4px solid black;
 
@@ -21,9 +39,4 @@ canvas {
 
 #canvasinputbox{
     /* visibility: hidden; */
-}
-
-#oops {
-    display: none;
-    color: red;
 }

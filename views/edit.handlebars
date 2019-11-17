@@ -1,0 +1,32 @@
+<header>
+    <h2>Edit your profile</h2>
+</header>
+{{#names}}
+<form class="edit" method="POST">
+<div class="edit-profile">
+        <h4>First Name</h4>
+<input type="text" name="first-name" value="{{firstname}}">
+<br>
+        <h4>Last Name</h4>
+<input type="text" name="last-name" value="{{lastname}}">
+<br>
+    <h4>Email</h4>
+<input type="email" name="email" value="{{email}}">
+<br>
+<h4>Password</h4>
+<input type="password" name="email" value="">
+<br>
+    <h4>Age</h4>
+<input type="number" name="age" value="{{age}}">
+<br>
+    <h4>City</h4>
+<input type="text" name="city" value="{{city}}">
+<br>
+    <h4>Url</h4>
+<input type="url" name="password" value="{{url}}">
+<br>
+<button class="p-3 mb-2 bg-secondary text-white">Save Changes</button>
+</div>
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+</form>
+{{/names}}
